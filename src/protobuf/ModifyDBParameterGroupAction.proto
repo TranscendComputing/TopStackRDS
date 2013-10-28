@@ -1,0 +1,22 @@
+import "RDS.proto";
+package topstack_RDS;
+
+option java_package = "com.transcend.rds.message";
+option java_outer_classname = "ModifyDBParameterGroupActionMessage";
+
+message ModifyDBParameterGroupActionRequestMessage {
+    required bool typeId = 650;
+
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+    required string dbParameterGroupName = 3;
+    repeated Parameter parameters = 4;
+}
+
+message ModifyDBParameterGroupActionResultMessage {
+    required bool typeId = 651;
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+    required string dbParameterGroupName = 3;
+
+}

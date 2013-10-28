@@ -1,0 +1,44 @@
+import "RDS.proto";
+package topstack_RDS;
+
+option java_package = "com.transcend.rds.message";
+option java_outer_classname = "CreateDBInstanceActionMessage";
+
+message CreateDBInstanceActionRequestMessage {
+    required bool typeId = 602;
+
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+    required uint32 allocatedStorage = 3;
+    optional bool   autoMinorVersionUpgrade = 4;
+    optional string availabilityZone = 5;
+    optional uint32 backupRetentionPeriod = 6;
+    optional string characterSetName = 7;
+    required string dbInstanceClass = 8;
+    required string dbInstanceIdentifier = 9;
+    optional string dbName = 10;
+    optional string dbParameterGroupName = 11;
+    repeated string dbSecurityGroups = 12;
+    optional string dbSubnetGroupName = 13;
+    required string engine = 14;
+    optional string engineVersion = 15;
+    optional uint32 iops = 16;
+    optional string licenseModel = 17;
+    required string masterUserPassword = 18;
+    required string masterUsername = 19;
+    optional bool   multiAZ = 20;
+    optional string optionGroupName = 21;
+    optional uint32 port = 22;
+    optional string preferredBackupWindow = 23;
+    optional string preferredMaintenanceWindow = 24;
+    optional bool   publiclyAccessible = 25;
+    repeated Tag    tags = 26;
+    repeated string vpcSecurityGroupIds = 27;
+}
+
+message CreateDBInstanceActionResultMessage {
+    required bool typeId = 603;
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+	required DBInstance dbInstance = 3;
+}

@@ -1,0 +1,29 @@
+import "RDS.proto";
+package topstack_RDS;
+
+option java_package = "com.transcend.rds.message";
+option java_outer_classname = "AuthorizeDBSecurityGroupIngressActionMessage";
+
+message AuthorizeDBSecurityGroupIngressActionRequestMessage {
+    required bool typeId = 600;
+
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+    optional string cidrip = 3;
+    required string dbSecurityGroupName = 4;
+    optional string ec2SecurityGroupId = 5;
+    optional string ec2SecurityGroupName = 6;
+    optional string ec2SecurityGroupOwnerId = 7;
+}
+
+message AuthorizeDBSecurityGroupIngressActionResultMessage {
+    required bool typeId = 601;
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+    required string dbSecurityGroupDescription = 3;
+    required string dbSecurityGroupName = 4;
+    repeated EC2SecurityGroup ec2SecurityGroups = 5;
+    repeated IPRange ipRanges = 6;
+    required string ownerId = 7;
+    required string vpcId = 8;
+}

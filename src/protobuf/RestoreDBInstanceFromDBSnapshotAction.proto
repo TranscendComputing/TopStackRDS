@@ -1,0 +1,34 @@
+import "RDS.proto";
+package topstack_RDS;
+
+option java_package = "com.transcend.rds.message";
+option java_outer_classname = "RestoreDBInstanceFromDBSnapshotActionMessage";
+
+message RestoreDBInstanceFromDBSnapshotActionRequestMessage {
+    required bool typeId = 660;
+
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+    optional bool   autoMinorVersionUpgrade = 3;
+    optional string availabilityZone = 4;
+    required string dbInstanceClass = 5;
+    required string dbInstanceIdentifier = 6;
+    optional string dbName = 7;
+    required string dbSnapshotIdentifier = 8;
+    optional string dbSubnetGroupName = 9;
+    required string engine = 10;
+    optional uint32 iops = 11;
+    optional string licenseModel = 12;
+    optional bool   multiAZ = 13;
+    optional string optionGroupName = 14;
+    optional uint32 port = 15;
+    optional bool   publiclyAccessible = 16;
+    repeated Tag    tags = 17;
+}
+
+message RestoreDBInstanceFromDBSnapshotActionResultMessage {
+    required bool typeId = 661;
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+	required DBInstance dbInstance = 3;
+}

@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project basedir="." name="RDSQuery" default="war.all" >
+
+	<property name="name" value="RDSQuery" />
+	<property file="${user.home}/${name}.properties"/>
+	<property file="${user.home}/build.properties"/>
+	<property name="config.filename" value="${user.name}.properties"/>
+	<property file="${config.filename}"/>
+	<property file="build.properties"/>
+
+	<property name="project.base.dir" value="." />
+	<property name="src" value="${project.base.dir}/src" />
+    <condition property="server.url" value="${server.url}" else="localhost:8080">
+        <isset property="server.url"/>
+    </condition>
+	<property name="WebContent" value="${project.base.dir}/WebContent" />
+	<property name="test" value="${project.base.dir}/test" />
+	<property name="build" value="${project.base.dir}/build" />
+	<property name="project.lib" value="${project.base.dir}/lib" />
+	<property name="war" value="${build}/war" />
+	<property name="classes" value="${war}/WEB-INF/classes" />
+	<property name="warlib" value="${war}/WEB-INF/lib" />
+	<property name="lib" value="${build}/lib" />
+	<property name="external" value="${build}/external" />
+	<property name="external.lib" value="${build}/external/lib" />
+    <property name="build.dir" location="build" />
+    <property name="classes.dir" location="${build.dir}/classes" />
+    <property name="resources.dir" location="resources" />
+    <property name="external.dir" location="${external}" />
+    <property name="target.war.name" value="RDSQuery.war"/>
+    <property name="target.war" location="${build.dir}/lib/${target.war.name}"/>
+    <property name="web.xml" location="${classes.dir}/WEB-INF/web.xml"/>
+    <property name="web.lib" location="${classes.dir}/WEB-INF/lib"/>
+	<property name="config.dir" value="../TopStackResources/build/config" />
+    <property name="hudson.url" value="jenkins.momentumsoftware.com:8080/" />
+	<property name="resources" value="${project.base.dir}/resources" />
+
+	<property name="maven.compat" value="true"/>
+	
+    <property name="dist.suffix" value="" />
+    <property name="toughresources" value="TopStackResources${dist.suffix}" />
+    <property name="toughresources.dir" value="${project.base.dir}/../${toughresources}"/>
+    <property name="message.dir" value="${src}/com/transcend/rds/message" />
+    <import file="${toughresources.dir}/common.build.xml" />
+	
+	<property name="scheduler.enabled" value="true" />
+
+    <path id="war.lib.classpath">
+        <fileset dir="${web.lib}">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+    <path id="ear.lib.classpath"/>
+    <path id="project.classpath">
+        <pathelement location="${classes.dir}"/>
+        <path refid="tomcat.classpath"/>
+        <path refid="war.lib.classpath"/>
+        <path refid="ear.lib.classpath"/>
+    </path>
+
+    <!-- general targets -->
+    <target name="init">
+		<mkdir dir="${build}" />
+		<mkdir dir="${classes}" />
+		<mkdir dir="${warlib}" />
+		<mkdir dir="${lib}" />
+		<mkdir dir="${external}" />
+		<mkdir dir="${external.lib}"/>
+		<mkdir dir="${web.lib}"/>
+        <mkdir dir="${classes.dir}"/>
+        <mkdir dir="${message.dir}" />
+ 
+         <copy includeemptydirs="false" todir="${classes.dir}">
+            <fileset dir="src">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+        <copy todir="${classes.dir}/WEB-INF">
+            <fileset dir="WebContent/WEB-INF"/>
+        </copy>
+        <copy todir="${classes.dir}/META-INF">
+            <fileset dir="WebContent/META-INF"/>
+        </copy>  
+    	<!--
+        <copy includeemptydirs="false" todir="${web.lib}">
+            <fileset dir="${tough.core.externals}"/>
+            <fileset dir="${tough.core.lib}"/>
+        </copy>
+        -->
+	</target>
+
+	<!-- BEGIN: targets from the former buildLocal.xml -->
+
+	<target name="xxxcompile.src" depends="copy-dependencies-hudson, copy-dependencies-dev, copyWebContent">
+		<path id="project.classpath">
+			<fileset dir="${warlib}">
+				<include name="*.jar" />
+			</fileset>
+			<pathelement path="${java.class.path}" />
+		</path>
+
+		<property name="myclasspath" refid="project.classpath" />
+		<!-- Emit the property to the ant console -->
+		<echo message="Classpath = ${myclasspath}" />
+
+		<javac debug="on" memoryMaximumSize="256m" memoryInitialSize="256m" fork="true" destdir="${classes}" srcdir="${src}">
+			<compilerarg value="-Xlint:unchecked" />
+			<classpath refid="project.classpath" />
+		</javac>
+	</target>
+
+	<target name="copy.config" depends="init">
+		<copy todir="${classes}" overwrite="true">
+			<fileset dir="${resources}" >
+			</fileset>
+		</copy>
+		<!-- unzip dest="${classes}" src="${external}/tough-resources-config.zip">
+		</unzip -->
+	</target>
+
+	<target name="deploy.copy" depends="war.all">
+		<copy todir="${tomcat.dir}/webapps" file="${lib}/${name}.war"></copy>
+	</target>
+
+	<!-- END: targets from the former buildLocal.xml -->
+
+    <target name="build-refprojects"
+        description="Build all projects which reference this project. Useful to propagate changes."/>
+
+    <target  name="init-eclipse-compiler"
+        description="copy Eclipse compiler jars to ant lib directory">
+        <copy todir="${ant.library.dir}">
+            <fileset dir="${eclipse.dir}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </copy>
+        <unzip dest="${ant.library.dir}">
+            <patternset includes="jdtCompilerAdapter.jar"/>
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </unzip>
+    </target>
+
+    <target name="build-eclipse-compiler" description="compile project with Eclipse compiler">
+        <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+        <antcall target="build"/>
+    </target>
+
+    <target name="build-subprojects" depends="init">
+    </target>
+
+    <target name="build-project" depends="build-subprojects">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="${classes.dir}">
+            <classpath refid="project.classpath"/>
+            <src path="src"/>
+        </javac>
+    </target>
+
+    <target name="build-war" depends="build-project"
+        description="Copy all web content to build area and generate war file.">
+        <copy toDir="${classes.dir}/META-INF" failonerror="false">
+            <fileset dir="${resources.dir}">
+                <include name="*.xml" />
+                <include name="*.wsdl" />
+                <include name="*.xsd" />
+            </fileset>
+        </copy>
+        <war destfile="${target.war}" webxml="${web.xml}">
+            <lib dir="${web.lib}">
+                <!-- <exclude name="jdbc1.jar"/> -->
+            </lib>
+            <classes dir="${classes.dir}"/>
+        </war>
+    </target>
+
+    <target name="build" depends="build-war"/>
+
+    <target name="deployLocal" depends="build"
+        description="Deploys the built war file to an Apache Tomcat server.">
+        <copy file="${target.war}" todir="${tomcat.dir}/webapps" overwrite="true"/>
+        <!--
+        <deploy url="http://${server.url}/manager"
+                username="supersecretusername"
+                password="supersecretpassword"
+                path="/${ant.project.name}"
+                war="file:${target.war}" />
+        -->
+    </target>
+
+    <!-- Package test base classes and utilities for re-use in descendents -->
+    <target name="jar.client" depends="run.tests">
+        <jar destfile="${lib}/${name}-client.jar">
+            <fileset dir="${classes}">
+                <include name="*.ports" />
+                <include name="**/${message.path}/*.class" />
+            </fileset>
+        </jar>
+    </target>
+	
+	<target name="war.all" depends="compile.proto, compile.src, copy.config, copyWebContent, run.tests">
+		<war.all.maven/>
+	</target>
+
+	<target name="integration-test" depends="">
+	</target>
+	
+    <target name="maven.deploy" depends="jar.client, dist, maven.deploy.war.n.client">
+    </target>
+</project>

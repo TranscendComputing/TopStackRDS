@@ -1,0 +1,21 @@
+import "RDS.proto";
+package topstack_RDS;
+
+option java_package = "com.transcend.rds.message";
+option java_outer_classname = "DeleteDBSubnetGroupActionMessage";
+
+message DeleteDBSubnetGroupActionRequestMessage {
+    required bool typeId = 622;
+
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+    required string dbSubnetGroupName = 3;
+
+}
+
+message DeleteDBSubnetGroupActionResultMessage {
+    required bool typeId = 623;
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+
+}

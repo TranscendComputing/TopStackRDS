@@ -1,0 +1,32 @@
+import "RDS.proto";
+package topstack_RDS;
+
+option java_package = "com.transcend.rds.message";
+option java_outer_classname = "DescribeReservedDBInstancesActionMessage";
+
+message DescribeReservedDBInstancesActionRequestMessage {
+    required bool typeId = 644;
+
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+    optional string dbInstanceClass = 3;
+    optional string duration = 4;
+    repeated Filter filters = 5;
+    optional string marker = 6;
+    optional uint32 maxRecords = 7;
+    optional bool   multiAZ = 8;
+    optional string offeringType = 9;
+    optional string productDescription = 10;
+    optional string reservedDBInstanceId = 11;
+    optional string reservedDBInstancesOfferingId = 12;
+
+
+}
+
+message DescribeReservedDBInstancesActionResultMessage {
+    required bool typeId = 645;
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+    required string marker = 3;
+    repeated ReservedDBInstance reservedDBInstance = 4;
+}

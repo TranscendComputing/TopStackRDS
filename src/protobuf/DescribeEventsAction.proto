@@ -1,0 +1,29 @@
+import "RDS.proto";
+package topstack_RDS;
+
+option java_package = "com.transcend.rds.message";
+option java_outer_classname = "DescribeEventsActionMessage";
+
+message DescribeEventsActionRequestMessage {
+    required bool typeId = 640;
+ 
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+    optional uint32 duration = 3;
+    optional string endTime = 4;
+    repeated string eventCategories = 5;
+    optional string marker = 6;
+    optional uint32 maxRecords = 7;
+    optional string sourceIdentifier = 8;
+    optional string sourceType = 9;
+    optional string startTime = 10;
+
+}
+
+message DescribeEventsActionResultMessage {
+    required bool typeId = 641;
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+    repeated Event  events = 3;
+    required string marker = 4;
+}

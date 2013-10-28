@@ -1,0 +1,24 @@
+import "RDS.proto";
+package topstack_RDS;
+
+option java_package = "com.transcend.rds.message";
+option java_outer_classname = "DescribeDBSecurityGroupsActionMessage";
+
+message DescribeDBSecurityGroupsActionRequestMessage {
+    required bool typeId = 632;
+
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+    optional string dbSecurityGroupName = 3;
+    repeated Filter filters = 4;
+    optional string marker = 5;
+    optional uint32 maxRecords = 6;
+}
+
+message DescribeDBSecurityGroupsActionResultMessage {
+    required bool typeId = 633;
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+    repeated DBSecurityGroup dbSecurityGroups = 3;
+    required string marker = 4;
+}

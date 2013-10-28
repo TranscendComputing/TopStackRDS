@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:oxm="http://www.springframework.org/schema/oxm"
+    xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:lang="http://www.springframework.org/schema/lang"
+    xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+        http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-3.0.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+    <!-- ==============================     -->
+    <bean id="serviceName" class="java.lang.String">
+        <constructor-arg value="rds"/>
+    </bean>
+    <!-- ==============================     -->
+    
+    <!-- <import resource="rdsQuery-context.xml"/> -->
+    <!-- <import resource="scheduler-context.xml"/> -->
+    <import resource="commonservices-context.xml" />
+    
+	<!--  <util:map id="CONTEXT_RESOURCES">
+		<entry key="RELOAD_RESOURCES"
+			value="loadBalancerQuery-context.xml, commonservices-context.xml"></entry>
+		<entry key="RELOAD_CHECK_FREQUENCY" value="60"></entry>
+		<entry key="RELOAD_DIR" value="${TOUGH_CONFIG_DIR}"></entry>
+	</util:map> -->
+	
+	   <bean id="servicesPropertyConfigurer"
+        class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+        <property name="ignoreUnresolvablePlaceholders" value="true" />
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="locations">
+                <list>
+                        <value>classpath*:/*.properties</value>
+                        <value>file:${catalina.base}/conf/transcend.properties</value>
+                        <value>classpath*:/rds.ports</value>
+                </list>
+        </property>
+    </bean>
+    
+	
+	<bean id="AuthorizeDBSecurityGroupIngressAction"
+	    class="com.transcend.rds.actions.AuthorizeDBSecurityGroupIngressAction"/>
+	<bean id="AuthorizeDBSecurityGroupIngressActionWorker"
+	    class="com.transcend.rds.worker.AuthorizeDBSecurityGroupIngressActionWorker"/>
+	
+	<bean id="CreateDBInstanceAction"
+	    class="com.transcend.rds.actions.CreateDBInstanceAction"/>
+	<bean id="CreateDBInstanceActionWorker"
+	    class="com.transcend.rds.worker.CreateDBInstanceActionWorker"/>
+	
+	<bean id="CreateDBInstanceReadReplicaAction"
+	    class="com.transcend.rds.actions.CreateDBInstanceReadReplicaAction"/>
+	<bean id="CreateDBInstanceReadReplicaActionWorker"
+	    class="com.transcend.rds.worker.CreateDBInstanceReadReplicaActionWorker"/>
+	
+	<bean id="CreateDBParameterGroupAction"
+	    class="com.transcend.rds.actions.CreateDBParameterGroupAction"/>
+	<bean id="CreateDBParameterGroupActionWorker"
+	    class="com.transcend.rds.worker.CreateDBParameterGroupActionWorker"/>
+
+	<bean id="CreateDBSecurityGroupAction"
+	    class="com.transcend.rds.actions.CreateDBSecurityGroupAction"/>
+	<bean id="CreateDBSecurityGroupActionWorker"
+	    class="com.transcend.rds.worker.CreateDBSecurityGroupActionWorker"/>
+	
+	<bean id="CreateDBSnapshotAction"
+	    class="com.transcend.rds.actions.CreateDBSnapshotAction"/>
+	<bean id="CreateDBSnapshotActionWorker"
+	    class="com.transcend.rds.worker.CreateDBSnapshotActionWorker"/>
+	
+	<bean id="CreateDBSubnetGroupAction"
+	    class="com.transcend.rds.actions.CreateDBSubnetGroupAction"/>
+	<bean id="CreateDBSubnetGroupActionWorker"
+	    class="com.transcend.rds.worker.CreateDBSubnetGroupActionWorker"/>
+	
+	<bean id="DeleteDBInstanceAction"
+	    class="com.transcend.rds.actions.DeleteDBInstanceAction"/>
+	<bean id="DeleteDBInstanceActionWorker"
+	    class="com.transcend.rds.worker.DeleteDBInstanceActionWorker"/>
+	
+	<bean id="DeleteDBParameterGroupAction"
+	    class="com.transcend.rds.actions.DeleteDBParameterGroupAction"/>
+	<bean id="DeleteDBParameterGroupActionWorker"
+	    class="com.transcend.rds.worker.DeleteDBParameterGroupActionWorker"/>
+	
+	<bean id="DeleteDBSecurityGroupAction"
+	    class="com.transcend.rds.actions.DeleteDBSecurityGroupAction"/>
+	<bean id="DeleteDBSecurityGroupActionWorker"
+	    class="com.transcend.rds.worker.DeleteDBSecurityGroupActionWorker"/>
+	
+	<bean id="DeleteDBSnapshotAction"
+	    class="com.transcend.rds.actions.DeleteDBSnapshotAction"/>
+	<bean id="DeleteDBSnapshotActionWorker"
+	    class="com.transcend.rds.worker.DeleteDBSnapshotActionWorker"/>
+	
+	<bean id="DeleteDBSubnetGroupAction"
+	    class="com.transcend.rds.actions.DeleteDBSubnetGroupAction"/>
+	<bean id="DeleteDBSubnetGroupActionWorker"
+	    class="com.transcend.rds.worker.DeleteDBSubnetGroupActionWorker"/>
+	
+	<bean id="DescribeDBEngineVersionsAction"
+	    class="com.transcend.rds.actions.DescribeDBEngineVersionsAction"/>
+	<bean id="DescribeDBEngineVersionsActionWorker"
+	    class="com.transcend.rds.worker.DescribeDBEngineVersionsActionWorker"/>
+	
+	<bean id="DescribeDBInstancesAction"
+	    class="com.transcend.rds.actions.DescribeDBInstancesAction"/>
+	<bean id="DescribeDBInstancesActionWorker"
+	    class="com.transcend.rds.worker.DescribeDBInstancesActionWorker"/>
+	
+	<bean id="DescribeDBParameterGroupsAction"
+	    class="com.transcend.rds.actions.DescribeDBParameterGroupsAction"/>
+	<bean id="DescribeDBParameterGroupsActionWorker"
+	    class="com.transcend.rds.worker.DescribeDBParameterGroupsActionWorker"/>
+	
+	<bean id="DescribeDBParametersAction"
+	    class="com.transcend.rds.actions.DescribeDBParametersAction"/>
+	<bean id="DescribeDBParametersActionWorker"
+	    class="com.transcend.rds.worker.DescribeDBParametersActionWorker"/>
+	
+	<bean id="DescribeDBSecurityGroupsAction"
+	    class="com.transcend.rds.actions.DescribeDBSecurityGroupsAction"/>
+	<bean id="DescribeDBSecurityGroupsActionWorker"
+	    class="com.transcend.rds.worker.DescribeDBSecurityGroupsActionWorker"/>
+	
+	<bean id="DescribeDBSnapshotsAction"
+	    class="com.transcend.rds.actions.DescribeDBSnapshotsAction"/>
+	<bean id="DescribeDBSnapshotsActionWorker"
+	    class="com.transcend.rds.worker.DescribeDBSnapshotsActionWorker"/>
+	
+	<bean id="DescribeDBSubnetGroupAction"
+	    class="com.transcend.rds.actions.DescribeDBSubnetGroupAction"/>
+	<bean id="DescribeDBSubnetGroupActionWorker"
+	    class="com.transcend.rds.worker.DescribeDBSubnetGroupActionWorker"/>
+	
+	<bean id="DescribeEngineDefaultParametersAction"
+	    class="com.transcend.rds.actions.DescribeEngineDefaultParametersAction"/>
+	<bean id="DescribeEngineDefaultParametersActionWorker"
+	    class="com.transcend.rds.worker.DescribeEngineDefaultParametersActionWorker"/>
+	
+	<bean id="DescribeEventsAction"
+	    class="com.transcend.rds.actions.DescribeEventsAction"/>
+	<bean id="DescribeEventsActionWorker"
+	    class="com.transcend.rds.worker.DescribeEventsActionWorker"/>
+	
+	<bean id="DescribeOrderableDBInstanceOptionsAction"
+	    class="com.transcend.rds.actions.DescribeOrderableDBInstanceOptionsAction"/>
+	<bean id="DescribeOrderableDBInstanceOptionsActionWorker"
+	    class="com.transcend.rds.worker.DescribeOrderableDBInstanceOptionsActionWorker"/>
+	
+	<bean id="DescribeReservedDBInstancesAction"
+	    class="com.transcend.rds.actions.DescribeReservedDBInstancesAction"/>
+	<bean id="DescribeReservedDBInstancesActionWorker"
+	    class="com.transcend.rds.worker.DescribeReservedDBInstancesActionWorker"/>
+	
+	<bean id="DescribeReservedDBInstancesOfferingsAction"
+	    class="com.transcend.rds.actions.DescribeReservedDBInstancesOfferingsAction"/>
+	<bean id="DescribeReservedDBInstancesOfferingsActionWorker"
+	    class="com.transcend.rds.worker.DescribeReservedDBInstancesOfferingsActionWorker"/>
+	
+	<bean id="ModifyDBInstanceAction"
+	    class="com.transcend.rds.actions.ModifyDBInstanceAction"/>
+	<bean id="ModifyDBInstanceActionWorker"
+	    class="com.transcend.rds.worker.ModifyDBInstanceActionWorker"/>
+	
+	<bean id="ModifyDBParameterGroupAction"
+	    class="com.transcend.rds.actions.ModifyDBParameterGroupAction"/>
+	<bean id="ModifyDBParameterGroupActionWorker"
+	    class="com.transcend.rds.worker.ModifyDBParameterGroupActionWorker"/>
+	
+	<bean id="ModifyDBSubnetGroupAction"
+	    class="com.transcend.rds.actions.ModifyDBSubnetGroupAction"/>
+	<bean id="ModifyDBSubnetGroupActionWorker"
+	    class="com.transcend.rds.worker.ModifyDBSubnetGroupActionWorker"/>
+	    
+	<bean id="MountDBVolume"
+	    class="com.transcend.rds.actions.MountDBVolume"/>
+	<bean id="MountDBVolumeWorker"
+	    class="com.transcend.rds.worker.MountDBVolumeWorker"/>
+	
+	<bean id="PurchaseReservedDBInstancesOfferingAction"
+	    class="com.transcend.rds.actions.PurchaseReservedDBInstancesOfferingAction"/>
+	<bean id="PurchaseReservedDBInstancesOfferingActionWorker"
+	    class="com.transcend.rds.worker.PurchaseReservedDBInstancesOfferingActionWorker"/>
+	
+	<bean id="RebootDBInstanceAction"
+	    class="com.transcend.rds.actions.RebootDBInstanceAction"/>
+	<bean id="RebootDBInstanceActionWorker"
+	    class="com.transcend.rds.worker.RebootDBInstanceActionWorker"/>
+	
+	<bean id="ResetDBParameterGroupAction"
+	    class="com.transcend.rds.actions.ResetDBParameterGroupAction"/>
+	<bean id="ResetDBParameterGroupActionWorker"
+	    class="com.transcend.rds.worker.ResetDBParameterGroupActionWorker"/>
+	
+	<bean id="RestoreDBInstanceFromDBSnapshotAction"
+	    class="com.transcend.rds.actions.RestoreDBInstanceFromDBSnapshotAction"/>
+	<bean id="RestoreDBInstanceFromDBSnapshotActionWorker"
+	    class="com.transcend.rds.worker.RestoreDBInstanceFromDBSnapshotActionWorker"/>
+	
+	<bean id="RestoreDBInstanceToPointInTimeAction"
+	    class="com.transcend.rds.actions.RestoreDBInstanceToPointInTimeAction"/>
+	<bean id="RestoreDBInstanceToPointInTimeActionWorker"
+	    class="com.transcend.rds.worker.RestoreDBInstanceToPointInTimeActionWorker"/>
+	
+	<bean id="RevokeDBSecurityGroupIngressAction"
+	    class="com.transcend.rds.actions.RevokeDBSecurityGroupIngressAction"/>
+	<bean id="RevokeDBSecurityGroupIngressActionWorker"
+	    class="com.transcend.rds.worker.RevokeDBSecurityGroupIngressActionWorker"/>
+	
+	<bean id="SignalCreateDBSnapshot"
+	    class="com.transcend.rds.actions.SignalCreateDBSnapshot"/>
+	<bean id="SignalCreateDBSnapshotWorker"
+	    class="com.transcend.rds.worker.SignalCreateDBSnapshotWorker"/>
+	    
+    <bean id="UnsupportedAction"
+        class="com.msi.tough.query.UnsupportedAction"/>  
+	    
+    <bean id="rdsServiceAsync"
+        class="com.msi.tough.query.AsyncServiceImpl">
+        <constructor-arg>
+            <map>
+                <entry key="AuthorizeDBSecurityGroupIngress" value-ref="AuthorizeDBSecurityGroupIngressAction"/>
+				<entry key="CreateDBInstance" value-ref="CreateDBInstanceAction"/>
+				<entry key="CreateDBInstanceReadReplica" value-ref="CreateDBInstanceReadReplicaAction"/>
+				<entry key="CreateDBParameterGroup" value-ref="CreateDBParameterGroupAction"/>
+				<entry key="CreateDBSecurityGroup" value-ref="CreateDBSecurityGroupAction"/>
+				<entry key="CreateDBSnapshot" value-ref="CreateDBSnapshotAction"/>
+				<entry key="CreateDBSubnetGroup" value-ref="CreateDBSubnetGroupAction"/>
+				<entry key="DeleteDBInstance" value-ref="DeleteDBInstanceAction"/>
+				<entry key="DeleteDBParameterGroup" value-ref="DeleteDBParameterGroupAction"/>
+				<entry key="DeleteDBSecurityGroup" value-ref="DeleteDBSecurityGroupAction"/>
+				<entry key="DeleteDBSnapshot" value-ref="DeleteDBSnapshotAction"/>
+				<entry key="DeleteDBSubnetGroup" value-ref="DeleteDBSubnetGroupAction"/>
+				<entry key="DescribeDBEngineVersions" value-ref="DescribeDBEngineVersionsAction"/>
+				<entry key="DescribeDBInstances" value-ref="DescribeDBInstancesAction"/>
+				<entry key="DescribeDBParameterGroups" value-ref="DescribeDBParameterGroupsAction"/>
+				<entry key="DescribeDBParameters" value-ref="DescribeDBParametersAction"/>
+				<entry key="DescribeDBSecurityGroups" value-ref="DescribeDBSecurityGroupsAction"/>
+				<entry key="DescribeDBSnapshots" value-ref="DescribeDBSnapshotsAction"/>
+				<entry key="DescribeDBSubnetGroup" value-ref="DescribeDBSubnetGroupAction"/>
+				<entry key="DescribeEngineDefaultParameters" value-ref="DescribeEngineDefaultParametersAction"/>
+				<entry key="DescribeEvents" value-ref="DescribeEventsAction"/>
+				<entry key="DescribeOrderableDBInstanceOptions" value-ref="DescribeOrderableDBInstanceOptionsAction"/>
+				<entry key="DescribeReservedDBInstances" value-ref="DescribeReservedDBInstancesAction"/>
+				<entry key="DescribeReservedDBInstancesOfferings" value-ref="DescribeReservedDBInstancesOfferingsAction"/>
+				<entry key="ModifyDBInstance" value-ref="ModifyDBInstanceAction"/>
+				<entry key="ModifyDBParameterGroup" value-ref="ModifyDBParameterGroupAction"/>
+				<entry key="ModifyDBSubnetGroup" value-ref="ModifyDBSubnetGroupAction"/>
+			    <entry key="MountDBVolume" value-ref="MountDBVolume"/>
+				<entry key="PurchaseReservedDBInstancesOffering" value-ref="PurchaseReservedDBInstancesOfferingAction"/>
+				<entry key="RebootDBInstance" value-ref="RebootDBInstanceAction"/>
+				<entry key="ResetDBParameterGroup" value-ref="ResetDBParameterGroupAction"/>
+				<entry key="RestoreDBInstanceFromDBSnapshot" value-ref="RestoreDBInstanceFromDBSnapshotAction"/>
+				<entry key="RestoreDBInstanceToPointInTime" value-ref="RestoreDBInstanceToPointInTimeAction"/>
+				<entry key="RevokeDBSecurityGroupIngress" value-ref="RevokeDBSecurityGroupIngressAction"/>
+				<entry key="SignalCreateDBSnapshot" value-ref="SignalCreateDBSnapshot"/>
+            </map>
+        </constructor-arg>
+    </bean>    
+             
+      <bean id="endpoint" class="java.lang.String">
+        <constructor-arg value="ActionIn"/>
+    </bean>
+    <bean id="rawEndpoint" class="java.lang.String">
+        <constructor-arg value="DirectToZMQEntry"/>
+    </bean>
+
+    <bean id="workflow" factory-method="getInstance"
+    class="com.msi.tough.workflow.core.MuleWorkflow">
+    </bean>
+
+    <bean id="recvEndpoint" class="java.lang.String">
+        <constructor-arg value="tcp://*:${rds.port}"/>
+    </bean>
+
+    <bean id="workflowReceiver" init-method="init" destroy-method="destroy"
+    class="com.msi.tough.workflow.core.WorkflowReceiver">
+    </bean>
+
+    <bean id="actionHelper" class="com.msi.tough.query.ActionHelper">
+    </bean>
+
+    <!-- Run common annotations; e.g. PostConstruct/PreDestroy. -->
+    <context:annotation-config />
+
+    <!-- <bean id="schedulerInit" class="com.msi.tough.scheduler.SchedulerInit">
+        <property name="enabled" value="${scheduler.enabled}" />
+    </bean> -->
+
+    <bean id="appctx" factory-method="getInstanceForInjection"
+        class="com.msi.tough.core.Appctx">
+        <property name="configuration" ref="configuration"/>
+    </bean>
+
+    <bean class="com.msi.tough.core.AppctxInjector"/>
+    
+    <bean id="hibernateUtil" class="com.msi.tough.core.HibernateUtil">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+
+    <tx:annotation-driven transaction-manager="txManager"/>
+
+    <!-- Redefine session factory; this app uses annotations for transactions -->
+    <bean id="sessionFactory"
+        class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+        <property name="dataSource" ref="msiDS" />
+        <property name="configLocation" value="classpath:hibernate.cfg.xml"></property>
+        <property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration"></property>
+        <property name="hibernateProperties">
+            <value>hibernate.dialect=org.hibernate.dialect.MySQL5InnoDBDialect
+                hibernate.cache.provider_class=org.hibernate.cache.NoCacheProvider
+                hibernate.show_sql=false
+                hibernate.hbm2ddl.auto=update
+            </value>
+        </property>
+    </bean>
+   
+</beans>

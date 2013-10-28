@@ -1,0 +1,37 @@
+import "RDS.proto";
+package topstack_RDS;
+
+option java_package = "com.transcend.rds.message";
+option java_outer_classname = "PurchaseReservedDBInstancesOfferingActionMessage";
+
+message PurchaseReservedDBInstancesOfferingActionRequestMessage {
+    required bool typeId = 654;
+
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+    optional uint32 dbInstanceCount = 3;
+    optional string reservedDBInstanceId = 4;
+    required string reservedDBInstancesOfferingId = 5;
+    repeated Tag    tags = 6;
+}
+
+message PurchaseReservedDBInstancesOfferingActionResultMessage {
+    required bool typeId = 655;
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+    required string currencyCode = 3;
+    required string dbInstanceClass = 4;
+    required uint32 dbInstanceCount = 5;
+    required uint32 duration = 6; 
+    required double fixedPrice = 7; 
+    required bool   multiAZ = 8; 
+    required string offeringType = 9;
+    required string productDescription = 10;
+    repeated RecurringCharge recurringCharges = 11;
+    required string reservedDBInstanceId = 12;
+    required string reservedDBInstancesOfferingId = 13;
+    required string startTime = 14;
+    required string state = 15;
+    required double usagePrice = 16;
+
+}

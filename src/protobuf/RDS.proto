@@ -1,0 +1,258 @@
+package topstack_RDS;
+
+option java_package = "com.transcend.rds.message";
+option java_outer_classname = "RDSMessage";
+
+message AvailabilityZone {
+	optional string name = 1;
+	optional bool   provisionedIopsCapable = 2;	
+}
+
+message CharSet {
+	optional string characterSetDescription = 1;
+	optional string characterSetName = 2;
+}
+
+message DBEngineVersion {
+	optional string dbEngineDescription = 1;
+	optional string dbEngineVersionDescription = 2;
+	optional string dbParameterGroupFamily = 3;
+	optional CharSet defaultCharSet = 4;
+	optional string engine = 5;
+	optional string engineVersion = 6;
+	repeated CharSet supportedCharacterSets = 7;
+
+}
+
+message DBInstance {        
+	optional uint32 allocatedStorage = 1;
+	optional bool   autoMinorVersionUpgrade = 2;
+	optional string availabilityZone = 3;
+	optional uint32 backupRetentionPeriod = 4;
+	optional string characterSetName = 5;
+	optional string dbInstanceClass = 6;
+	optional string dbInstanceIdentifier = 7;
+	optional string dbInstanceStatus = 8;
+	optional string dbName = 9;
+	repeated DBParameterGroupStatus dbParameterGroups = 10;
+	repeated DBSecurityGroupMembership dbSecurityGroups = 11;
+	optional DBSubnetGroup dbSubnetGroup = 12;
+	optional Endpoint endpoint = 13;
+	optional string engine = 14;
+	optional string engineVersion = 15;
+	optional string instanceCreateTime = 16;
+	optional uint32 iops = 17;
+	optional string latestRestorableTime = 18;
+	optional string licenseModel = 19;
+	optional string masterUsername = 20;
+	optional bool   multiAZ = 21;
+	repeated OptionGroupMembership optionGroupMemberships = 22;
+	optional PendingModifiedValues pendingModifiedValues = 23;
+	optional string preferredBackupWindow = 24;
+	optional string preferredMaintenanceWindow = 25;
+	optional bool   publiclyAccessible = 26;
+	repeated string readReplicaDBInstanceIdentifiers = 27;
+	optional string readReplicaSourceDBInstanceIdentifier = 28;
+	optional string secondaryAvailabilityZone = 29;
+	repeated  DBInstanceStatusInfo statusInfos = 30;
+	repeated VpcSecurityGroupMembership vpcSecurityGroups = 31;
+}
+
+message DBInstanceStatusInfo {
+	optional string message = 1;
+	optional bool   normal = 2; 
+	optional string status = 3;
+	optional string statusType = 4;
+
+}
+
+message DBParameterGroup {
+	optional string dbParameterGroupFamily = 1;
+	optional string dbParameterGroupName = 2;
+	optional string description = 3;
+}
+
+
+message DBParameterGroupStatus {
+	optional string dbParameterGroupName = 1;
+	optional string parameterApplyStatus = 2;
+}
+
+message DBSecurityGroup {
+	optional string dbSecurityGroupDescription = 1;
+	optional string dbSecurityGroupName = 2;
+	repeated EC2SecurityGroup ec2SecurityGroups = 3;
+	repeated IPRange ipRanges = 4;
+	optional string ownerId = 5;
+	optional string vpcId = 6;
+
+}
+
+message DBSecurityGroupMembership {
+	optional string dbSecurityGroupName = 1;
+	optional string status = 2;
+}
+
+message DBSnapshot {
+	optional uint32 allocatedStorage = 1;
+	optional string availabilityZone = 2;
+	optional string dbInstanceIdentifier = 3;
+	optional string dbSnapshotIdentifier = 4;
+	optional string engine = 5;
+	optional string engineVersion = 6;
+	optional string instanceCreateTime = 7;
+	optional uint32 iops = 8;
+	optional string licenseModel = 9;
+	optional string masterUsername = 10;
+	optional string optionGroupName = 11;
+	optional uint32 port = 12;
+	optional string snapshotCreateTime = 13;
+	optional string snapshotType = 14;
+	optional string status = 15;
+	optional string vpcId = 16;
+}
+
+message DBSubnetGroup {
+	optional string dbSubnetGroupDescription = 1;
+	optional string dbSubnetGroupName = 2;
+	optional string subnetGroupStatus = 3;
+	repeated Subnet subnets = 4;
+	optional string vpcId = 5;
+}
+
+message EC2SecurityGroup {
+	optional string ec2SecurityGroupId = 1;
+	optional string ec2SecurityGroupName = 2;
+	optional string ec2SecurityGroupOwnerId = 3;
+	optional string status = 4;
+}
+
+message Endpoint {
+	optional string address = 1;
+	optional uint32 port = 2;
+}
+
+message EngineDefaults {
+	optional string dbParameterGroupFamily = 1;
+	optional string marker = 2;
+	repeated Parameter parameters = 3; 
+}
+
+message Event {
+	optional string date = 1;
+	repeated string eventCategories = 2;
+	optional string Message = 3;
+	optional string SourceIdentifier = 4;
+	enum EventType {
+		DB_INSTANCE = 0;
+		DB_PARAMETER_GROUP = 1;
+		DB_SECURITY_GROUP = 2;
+		DB_SNAPSHOT = 3;
+		}
+	optional string SourceType = 5;
+}
+
+
+message Filter {
+	optional string filterName = 1;
+	optional string filterValue = 2;
+}
+
+message IPRange {
+	optional string cidrip = 1;
+	optional string status = 2;
+}
+
+message OptionGroupMembership {
+	optional string optionGroupName = 1;
+	optional string status = 2;
+}
+
+message OrderableDBInstanceOption {
+	repeated AvailabilityZone availabilityZones = 1;
+	optional string dbInstanceClass = 2;
+	optional string engine = 3;
+	optional string engineVersion = 4;
+	optional string licenseModel = 5;
+	optional bool   multiAZCapable = 6;
+	optional bool   readReplicaCapable = 7;
+	optional bool   vpc = 8;
+}
+
+message Parameter {
+	optional string allowedValues = 1;
+	optional string applyMethod = 2;
+	optional string applyType = 3;
+	optional string dataType = 4;
+	optional string description = 5;
+	optional bool   isModifiable = 6;
+	optional string minimumEngineVersion = 7;
+	optional string parameterName = 8;
+	optional string parameterValue = 9;
+	optional string source = 10;
+}
+
+
+message PendingModifiedValues {
+	optional uint32 allocatedStorage = 1;
+	optional uint32 backupRetentionPeriod = 2;
+	optional string dbInstanceClass = 3;
+	optional string dbInstanceIdentifier = 4;
+	optional string engineVersion = 5;
+	optional uint32 iops = 6;
+	optional string masterUserPassword = 7;
+	optional bool   multiAZ = 8;
+	optional uint32 port = 9;
+}
+
+message RecurringCharge {
+	optional double recurringChargeAmount = 1;
+	optional string recurringChargeFrequency = 2;
+}
+
+message ReservedDBInstance {
+	optional string currencyCode = 1;
+	optional string dbInstanceClass = 2;
+	optional uint32 dbInstanceCount = 3;
+	optional uint32 duration = 4;
+	optional double fixedPrice = 5;
+	optional bool   multiAZ = 6;
+	optional string offeringType = 7;
+	optional string productDescription = 8;
+	repeated RecurringCharge recurringCharges = 9;
+	optional string reservedDBInstanceId = 10;
+	optional string reservedDBInstancesOfferingId = 11;
+	optional string startTime = 12;
+	optional string state = 13;
+	optional double usagePrice = 14;
+
+}
+
+message ReservedDBInstancesOffering {
+	optional string currencyCode = 1;
+	optional string dbInstanceClass = 2;
+	optional uint32 duration = 3;
+	optional double fixedPrice = 4;
+	optional bool   multiAZ = 5;
+	optional string offeringType = 6;
+	optional string productDescription = 7;
+	repeated RecurringCharge recurringCharges = 8;
+	optional string reservedDBInstancesOfferingId = 9;
+	optional double usagePrice = 10;
+}
+
+message Subnet {
+	optional AvailabilityZone subnetAvailabilityZone = 1;
+	optional string subnetIdentifier = 2;
+	optional string subnetStatus = 3;
+}
+
+message Tag {
+	optional string key = 1;
+	optional string value = 2;
+}
+
+message VpcSecurityGroupMembership {
+	optional string status = 1;
+	optional string vpcSecurityGroupId = 2;
+}

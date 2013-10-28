@@ -1,0 +1,1143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:spring="http://www.springframework.org/schema/beans"
+      xmlns:http="http://www.mulesoft.org/schema/mule/http"
+      xmlns:zmq="http://www.mulesoft.org/schema/mule/zeromq"
+      xmlns:vm="http://www.mulesoft.org/schema/mule/vm"
+      xmlns:protobuf="http://www.mulesoft.org/schema/mule/protobuf"
+      xmlns:scripting="http://www.mulesoft.org/schema/mule/scripting"
+      xsi:schemaLocation="http://wPutww.springframework.org/schema/beans
+      classpath:org/springframework/beans/factory/xml/spring-beans-3.0.xsd
+        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+        http://www.mulesoft.org/schema/mule/zeromq http://www.mulesoft.org/schema/mule/zeromq/1.1-SNAPSHOT/mule-zeromq.xsd
+        http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+        http://www.mulesoft.org/schema/mule/protobuf http://www.mulesoft.org/schema/mule/protobuf/current/mule-protobuf.xsd
+        http://www.mulesoft.org/schema/mule/scripting http://www.mulesoft.org/schema/mule/scripting/current/mule-scripting.xsd
+        http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd">
+    <description>
+    This configuration uses REST services and ZeroMQ endpoints to receive
+    requests.
+    </description>
+
+    <configuration>
+    <default-threading-profile maxThreadsActive="3"/>
+    </configuration>
+
+    <custom-transformer name="ExceptionToString" class="com.msi.tough.workflow.core.ExceptionToString"/>
+    <custom-transformer name="ExceptionToErrorResponse" class="com.msi.tough.workflow.core.ExceptionToErrorResponse"/>
+    <custom-transformer name="HttpRequestToParameter" class="org.mule.transport.servlet.transformers.HttpRequestToParameter"/>
+    <custom-transformer name="ObjectToString" class="org.mule.transformer.simple.ObjectToString"/>
+
+    <spring:bean id="muleWorkflow" factory-method="getInstance"
+    class="com.msi.tough.workflow.core.MuleWorkflow">
+    </spring:bean>
+
+    <zmq:connector name="ZMQ"/>
+
+    <!-- Begin zero MQ versions -->
+
+    <flow name="DirectToZMQ">
+        <inbound-endpoint ref="DirectToZMQIn"/>
+        <zmq:outbound-endpoint address="tcp://*:${rds.port}" socket-operation="connect" exchange-pattern="push"/>
+    </flow>
+
+    <flow name="ZMQEntry">
+        <inbound-endpoint ref="DirectToZMQEntry"/>
+        <set-session-variable variableName="returnAddress" value="#[payload[1]]"/>
+        <expression-transformer evaluator="groovy" expression="payload[0]"/>
+        <first-successful>
+			<protobuf:deserialize protobufClass="com.transcend.rds.message.AuthorizeDBSecurityGroupIngressActionMessage$AuthorizeDBSecurityGroupIngressActionRequestMessage"/>
+			<protobuf:deserialize protobufClass="com.transcend.rds.message.CreateDBInstanceActionMessage$CreateDBInstanceActionRequestMessage"/>
+			<protobuf:deserialize protobufClass="com.transcend.rds.message.CreateDBInstanceReadReplicaActionMessage$CreateDBInstanceReadReplicaActionRequestMessage"/>
+			<protobuf:deserialize protobufClass="com.transcend.rds.message.CreateDBParameterGroupActionMessage$CreateDBParameterGroupActionRequestMessage"/>
+			<protobuf:deserialize protobufClass="com.transcend.rds.message.CreateDBSecurityGroupActionMessage$CreateDBSecurityGroupActionRequestMessage"/>
+			<protobuf:deserialize protobufClass="com.transcend.rds.message.CreateDBSnapshotActionMessage$CreateDBSnapshotActionRequestMessage"/>
+			<protobuf:deserialize protobufClass="com.transcend.rds.message.CreateDBSubnetGroupActionMessage$CreateDBSubnetGroupActionRequestMessage"/>
+			<protobuf:deserialize protobufClass="com.transcend.rds.message.DeleteDBInstanceActionMessage$DeleteDBInstanceActionRequestMessage"/>
+		    <protobuf:deserialize protobufClass="com.transcend.rds.message.DeleteDBParameterGroupActionMessage$DeleteDBParameterGroupActionRequestMessage"/>
+			<protobuf:deserialize protobufClass="com.transcend.rds.message.DeleteDBSecurityGroupActionMessage$DeleteDBSecurityGroupActionRequestMessage"/>
+			<protobuf:deserialize protobufClass="com.transcend.rds.message.DeleteDBSnapshotActionMessage$DeleteDBSnapshotActionRequestMessage"/>
+			<protobuf:deserialize protobufClass="com.transcend.rds.message.DeleteDBSubnetGroupActionMessage$DeleteDBSubnetGroupActionRequestMessage"/>
+			<protobuf:deserialize protobufClass="com.transcend.rds.message.DescribeDBEngineVersionsActionMessage$DescribeDBEngineVersionsActionRequestMessage"/>
+			<protobuf:deserialize protobufClass="com.transcend.rds.message.DescribeDBInstancesActionMessage$DescribeDBInstancesActionRequestMessage"/>
+			<protobuf:deserialize protobufClass="com.transcend.rds.message.DescribeDBParameterGroupsActionMessage$DescribeDBParameterGroupsActionRequestMessage"/>
+			<protobuf:deserialize protobufClass="com.transcend.rds.message.DescribeDBParametersActionMessage$DescribeDBParametersActionRequestMessage"/>
+			<protobuf:deserialize protobufClass="com.transcend.rds.message.DescribeDBSecurityGroupsActionMessage$DescribeDBSecurityGroupsActionRequestMessage"/>
+			<protobuf:deserialize protobufClass="com.transcend.rds.message.DescribeDBSnapshotsActionMessage$DescribeDBSnapshotsActionRequestMessage"/>
+			<protobuf:deserialize protobufClass="com.transcend.rds.message.DescribeDBSubnetGroupActionMessage$DescribeDBSubnetGroupActionRequestMessage"/>
+			<protobuf:deserialize protobufClass="com.transcend.rds.message.DescribeEngineDefaultParametersActionMessage$DescribeEngineDefaultParametersActionRequestMessage"/>
+			<protobuf:deserialize protobufClass="com.transcend.rds.message.DescribeEventsActionMessage$DescribeEventsActionRequestMessage"/>
+			<protobuf:deserialize protobufClass="com.transcend.rds.message.DescribeOrderableDBInstanceOptionsActionMessage$DescribeOrderableDBInstanceOptionsActionRequestMessage"/>
+			<protobuf:deserialize protobufClass="com.transcend.rds.message.DescribeReservedDBInstancesActionMessage$DescribeReservedDBInstancesActionRequestMessage"/>
+			<protobuf:deserialize protobufClass="com.transcend.rds.message.DescribeReservedDBInstancesOfferingsActionMessage$DescribeReservedDBInstancesOfferingsActionRequestMessage"/>
+			<protobuf:deserialize protobufClass="com.transcend.rds.message.ModifyDBInstanceActionMessage$ModifyDBInstanceActionRequestMessage"/>
+			<protobuf:deserialize protobufClass="com.transcend.rds.message.ModifyDBParameterGroupActionMessage$ModifyDBParameterGroupActionRequestMessage"/>
+			<protobuf:deserialize protobufClass="com.transcend.rds.message.ModifyDBSubnetGroupActionMessage$ModifyDBSubnetGroupActionRequestMessage"/>
+			<protobuf:deserialize protobufClass="com.transcend.rds.message.MountDBVolumeMessage$MountDBVolumeRequestMessage"/>
+			<protobuf:deserialize protobufClass="com.transcend.rds.message.PurchaseReservedDBInstancesOfferingActionMessage$PurchaseReservedDBInstancesOfferingActionRequestMessage"/>
+			<protobuf:deserialize protobufClass="com.transcend.rds.message.RebootDBInstanceActionMessage$RebootDBInstanceActionRequestMessage"/>
+			<protobuf:deserialize protobufClass="com.transcend.rds.message.ResetDBParameterGroupActionMessage$ResetDBParameterGroupActionRequestMessage"/>
+			<protobuf:deserialize protobufClass="com.transcend.rds.message.RestoreDBInstanceFromDBSnapshotActionMessage$RestoreDBInstanceFromDBSnapshotActionRequestMessage"/>
+			<protobuf:deserialize protobufClass="com.transcend.rds.message.RestoreDBInstanceToPointInTimeActionMessage$RestoreDBInstanceToPointInTimeActionRequestMessage"/>
+			<protobuf:deserialize protobufClass="com.transcend.rds.message.RevokeDBSecurityGroupIngressActionMessage$RevokeDBSecurityGroupIngressActionRequestMessage"/>
+			<protobuf:deserialize protobufClass="com.transcend.rds.message.SignalCreateDBSnapshotMessage$SignalCreateDBSnapshotRequestMessage"/>
+        </first-successful>
+        <log-component />
+        <flow-ref name="ActionEntry"/>
+        <catch-exception-strategy>
+            <outbound-endpoint ref="SystemErrorHandlerIn"/>
+        </catch-exception-strategy>
+    </flow>
+
+    <flow name="ActionEntry">
+        <inbound-endpoint ref="ActionIn"/>
+        <log-component />
+        <choice>            
+			<when expression="payload instanceof com.transcend.rds.message.AuthorizeDBSecurityGroupIngressActionMessage$AuthorizeDBSecurityGroupIngressActionRequestMessage" evaluator="groovy">
+			   <flow-ref name="AuthorizeDBSecurityGroupIngressActionRequest"/>
+			</when>
+			<when expression="payload instanceof com.transcend.rds.message.CreateDBInstanceActionMessage$CreateDBInstanceActionRequestMessage" evaluator="groovy">
+			   <flow-ref name="CreateDBInstanceActionRequest"/>
+			</when>
+			<when expression="payload instanceof com.transcend.rds.message.CreateDBInstanceReadReplicaActionMessage$CreateDBInstanceReadReplicaActionRequestMessage" evaluator="groovy">
+			   <flow-ref name="CreateDBInstanceReadReplicaActionRequest"/>
+			</when>
+			<when expression="payload instanceof com.transcend.rds.message.CreateDBParameterGroupActionMessage$CreateDBParameterGroupActionRequestMessage" evaluator="groovy">
+			   <flow-ref name="CreateDBParameterGroupActionRequest"/>
+			</when>
+			<when expression="payload instanceof com.transcend.rds.message.CreateDBSecurityGroupActionMessage$CreateDBSecurityGroupActionRequestMessage" evaluator="groovy">
+			   <flow-ref name="CreateDBSecurityGroupActionRequest"/>
+			</when>
+			<when expression="payload instanceof com.transcend.rds.message.CreateDBSnapshotActionMessage$CreateDBSnapshotActionRequestMessage" evaluator="groovy">
+			   <flow-ref name="CreateDBSnapshotActionRequest"/>
+			</when>
+			<when expression="payload instanceof com.transcend.rds.message.CreateDBSubnetGroupActionMessage$CreateDBSubnetGroupActionRequestMessage" evaluator="groovy">
+			   <flow-ref name="CreateDBSubnetGroupActionRequest"/>
+			</when>
+			<when expression="payload instanceof com.transcend.rds.message.DeleteDBInstanceActionMessage$DeleteDBInstanceActionRequestMessage" evaluator="groovy">
+			   <flow-ref name="DeleteDBInstanceActionRequest"/>
+			</when>
+		 	 <when expression="payload instanceof com.transcend.rds.message.DeleteDBParameterGroupActionMessage$DeleteDBParameterGroupActionRequestMessage" evaluator="groovy">
+			   <flow-ref name="DeleteDBParameterGroupActionRequest"/>
+			</when>
+			<when expression="payload instanceof com.transcend.rds.message.DeleteDBSecurityGroupActionMessage$DeleteDBSecurityGroupActionRequestMessage" evaluator="groovy">
+			   <flow-ref name="DeleteDBSecurityGroupActionRequest"/>
+			</when>
+			<when expression="payload instanceof com.transcend.rds.message.DeleteDBSnapshotActionMessage$DeleteDBSnapshotActionRequestMessage" evaluator="groovy">
+			   <flow-ref name="DeleteDBSnapshotActionRequest"/>
+			</when>
+			<when expression="payload instanceof com.transcend.rds.message.DeleteDBSubnetGroupActionMessage$DeleteDBSubnetGroupActionRequestMessage" evaluator="groovy">
+			   <flow-ref name="DeleteDBSubnetGroupActionRequest"/>
+			</when>
+			<when expression="payload instanceof com.transcend.rds.message.DescribeDBEngineVersionsActionMessage$DescribeDBEngineVersionsActionRequestMessage" evaluator="groovy">
+			   <flow-ref name="DescribeDBEngineVersionsActionRequest"/>
+			</when>
+			<when expression="payload instanceof com.transcend.rds.message.DescribeDBInstancesActionMessage$DescribeDBInstancesActionRequestMessage" evaluator="groovy">
+			   <flow-ref name="DescribeDBInstancesActionRequest"/>
+			</when>
+			<when expression="payload instanceof com.transcend.rds.message.DescribeDBParameterGroupsActionMessage$DescribeDBParameterGroupsActionRequestMessage" evaluator="groovy">
+			   <flow-ref name="DescribeDBParameterGroupsActionRequest"/>
+			</when>
+			<when expression="payload instanceof com.transcend.rds.message.DescribeDBParametersActionMessage$DescribeDBParametersActionRequestMessage" evaluator="groovy">
+			   <flow-ref name="DescribeDBParametersActionRequest"/>
+			</when>
+			<when expression="payload instanceof com.transcend.rds.message.DescribeDBSecurityGroupsActionMessage$DescribeDBSecurityGroupsActionRequestMessage" evaluator="groovy">
+			   <flow-ref name="DescribeDBSecurityGroupsActionRequest"/>
+			</when>
+			<when expression="payload instanceof com.transcend.rds.message.DescribeDBSnapshotsActionMessage$DescribeDBSnapshotsActionRequestMessage" evaluator="groovy">
+			   <flow-ref name="DescribeDBSnapshotsActionRequest"/>
+			</when>
+			<when expression="payload instanceof com.transcend.rds.message.DescribeDBSubnetGroupActionMessage$DescribeDBSubnetGroupActionRequestMessage" evaluator="groovy">
+			   <flow-ref name="DescribeDBSubnetGroupActionRequest"/>
+			</when>
+			<when expression="payload instanceof com.transcend.rds.message.DescribeEngineDefaultParametersActionMessage$DescribeEngineDefaultParametersActionRequestMessage" evaluator="groovy">
+			   <flow-ref name="DescribeEngineDefaultParametersActionRequest"/>
+			</when>
+			<when expression="payload instanceof com.transcend.rds.message.DescribeEventsActionMessage$DescribeEventsActionRequestMessage" evaluator="groovy">
+			   <flow-ref name="DescribeEventsActionRequest"/>
+			</when>
+			<when expression="payload instanceof com.transcend.rds.message.DescribeOrderableDBInstanceOptionsActionMessage$DescribeOrderableDBInstanceOptionsActionRequestMessage" evaluator="groovy">
+			   <flow-ref name="DescribeOrderableDBInstanceOptionsActionRequest"/>
+			</when>
+			<when expression="payload instanceof com.transcend.rds.message.DescribeReservedDBInstancesActionMessage$DescribeReservedDBInstancesActionRequestMessage" evaluator="groovy">
+			   <flow-ref name="DescribeReservedDBInstancesActionRequest"/>
+			</when>
+			<when expression="payload instanceof com.transcend.rds.message.DescribeReservedDBInstancesOfferingsActionMessage$DescribeReservedDBInstancesOfferingsActionRequestMessage" evaluator="groovy">
+			   <flow-ref name="DescribeReservedDBInstancesOfferingsActionRequest"/>
+			</when>
+			<when expression="payload instanceof com.transcend.rds.message.ModifyDBInstanceActionMessage$ModifyDBInstanceActionRequestMessage" evaluator="groovy">
+			   <flow-ref name="ModifyDBInstanceActionRequest"/>
+			</when>
+			<when expression="payload instanceof com.transcend.rds.message.ModifyDBParameterGroupActionMessage$ModifyDBParameterGroupActionRequestMessage" evaluator="groovy">
+			   <flow-ref name="ModifyDBParameterGroupActionRequest"/>
+			</when>
+			<when expression="payload instanceof com.transcend.rds.message.ModifyDBSubnetGroupActionMessage$ModifyDBSubnetGroupActionRequestMessage" evaluator="groovy">
+			   <flow-ref name="ModifyDBSubnetGroupActionRequest"/>
+			</when>
+			<when expression="payload instanceof com.transcend.rds.message.MountDBVolumeMessage$MountDBVolumeRequestMessage" evaluator="groovy">
+			   <flow-ref name="MountDBVolumeRequest"/>
+			</when>
+			<when expression="payload instanceof com.transcend.rds.message.PurchaseReservedDBInstancesOfferingActionMessage$PurchaseReservedDBInstancesOfferingActionRequestMessage" evaluator="groovy">
+			   <flow-ref name="PurchaseReservedDBInstancesOfferingActionRequest"/>
+			</when>
+			<when expression="payload instanceof com.transcend.rds.message.RebootDBInstanceActionMessage$RebootDBInstanceActionRequestMessage" evaluator="groovy">
+			   <flow-ref name="RebootDBInstanceActionRequest"/>
+			</when>
+			<when expression="payload instanceof com.transcend.rds.message.ResetDBParameterGroupActionMessage$ResetDBParameterGroupActionRequestMessage" evaluator="groovy">
+			   <flow-ref name="ResetDBParameterGroupActionRequest"/>
+			</when>
+			<when expression="payload instanceof com.transcend.rds.message.RestoreDBInstanceFromDBSnapshotActionMessage$RestoreDBInstanceFromDBSnapshotActionRequestMessage" evaluator="groovy">
+			   <flow-ref name="RestoreDBInstanceFromDBSnapshotActionRequest"/>
+			</when>
+			<when expression="payload instanceof com.transcend.rds.message.RestoreDBInstanceToPointInTimeActionMessage$RestoreDBInstanceToPointInTimeActionRequestMessage" evaluator="groovy">
+			   <flow-ref name="RestoreDBInstanceToPointInTimeActionRequest"/>
+			</when>
+			<when expression="payload instanceof com.transcend.rds.message.RevokeDBSecurityGroupIngressActionMessage$RevokeDBSecurityGroupIngressActionRequestMessage" evaluator="groovy">
+			   <flow-ref name="RevokeDBSecurityGroupIngressActionRequest"/>
+			</when>
+			<when expression="payload instanceof com.transcend.rds.message.SignalCreateDBSnapshotMessage$SignalCreateDBSnapshotRequestMessage" evaluator="groovy">
+			   <flow-ref name="SignalCreateDBSnapshotRequest"/>
+			</when>
+            <otherwise>
+                <flow-ref name="SystemErrorHandler"/>
+            </otherwise>
+        </choice>
+    </flow>
+    
+	<!-- Request/Response flow for AuthorizeDBSecurityGroupIngressAction -->
+	
+	<flow name="AuthorizeDBSecurityGroupIngressActionRequest">
+	    <component>
+	        <spring-object bean="AuthorizeDBSecurityGroupIngressActionWorker"/>
+	    </component>
+	
+	    <flow-ref name="AuthorizeDBSecurityGroupIngressActionResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="AuthorizeDBSecurityGroupIngressActionResponse" >
+	    <component>
+	        <spring-object bean="AuthorizeDBSecurityGroupIngressAction"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<!-- Request/Response flow for CreateDBInstanceAction -->
+	
+	<flow name="CreateDBInstanceActionRequest">
+	    <component>
+	        <spring-object bean="CreateDBInstanceActionWorker"/>
+	    </component>
+	
+	    <flow-ref name="CreateDBInstanceActionResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="CreateDBInstanceActionResponse" >
+	    <component>
+	        <spring-object bean="CreateDBInstanceAction"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<!-- Request/Response flow for CreateDBInstanceReadReplicaAction -->
+	
+	<flow name="CreateDBInstanceReadReplicaActionRequest">
+	    <component>
+	        <spring-object bean="CreateDBInstanceReadReplicaActionWorker"/>
+	    </component>
+	
+	    <flow-ref name="CreateDBInstanceReadReplicaActionResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="CreateDBInstanceReadReplicaActionResponse" >
+	    <component>
+	        <spring-object bean="CreateDBInstanceReadReplicaAction"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<!-- Request/Response flow for CreateDBParameterGroupAction -->
+	
+	<flow name="CreateDBParameterGroupActionRequest">
+	    <component>
+	        <spring-object bean="CreateDBParameterGroupActionWorker"/>
+	    </component>
+	
+	    <flow-ref name="CreateDBParameterGroupActionResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="CreateDBParameterGroupActionResponse" >
+	    <component>
+	        <spring-object bean="CreateDBParameterGroupAction"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<!-- Request/Response flow for CreateDBSecurityGroupAction -->
+	
+	<flow name="CreateDBSecurityGroupActionRequest">
+	    <component>
+	        <spring-object bean="CreateDBSecurityGroupActionWorker"/>
+	    </component>
+	
+	    <flow-ref name="CreateDBSecurityGroupActionResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="CreateDBSecurityGroupActionResponse" >
+	    <component>
+	        <spring-object bean="CreateDBSecurityGroupAction"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<!-- Request/Response flow for CreateDBSnapshotAction -->
+	
+	<flow name="CreateDBSnapshotActionRequest">
+	    <component>
+	        <spring-object bean="CreateDBSnapshotActionWorker"/>
+	    </component>
+	
+	    <flow-ref name="CreateDBSnapshotActionResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="CreateDBSnapshotActionResponse" >
+	    <component>
+	        <spring-object bean="CreateDBSnapshotAction"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<!-- Request/Response flow for CreateDBSubnetGroupAction -->
+	
+	<flow name="CreateDBSubnetGroupActionRequest">
+	    <component>
+	        <spring-object bean="CreateDBSubnetGroupActionWorker"/>
+	    </component>
+	
+	    <flow-ref name="CreateDBSubnetGroupActionResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="CreateDBSubnetGroupActionResponse" >
+	    <component>
+	        <spring-object bean="CreateDBSubnetGroupAction"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<!-- Request/Response flow for DeleteDBInstanceAction -->
+	
+	<flow name="DeleteDBInstanceActionRequest">
+	    <component>
+	        <spring-object bean="DeleteDBInstanceActionWorker"/>
+	    </component>
+	
+	    <flow-ref name="DeleteDBInstanceActionResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="DeleteDBInstanceActionResponse" >
+	    <component>
+	        <spring-object bean="DeleteDBInstanceAction"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<!-- Request/Response flow for DeleteDBParameterGroupAction -->
+	
+	<flow name="DeleteDBParameterGroupActionRequest">
+	    <component>
+	        <spring-object bean="DeleteDBParameterGroupActionWorker"/>
+	    </component>
+	
+	    <flow-ref name="DeleteDBParameterGroupActionResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="DeleteDBParameterGroupActionResponse" >
+	    <component>
+	        <spring-object bean="DeleteDBParameterGroupAction"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<!-- Request/Response flow for DeleteDBSecurityGroupAction -->
+	
+	<flow name="DeleteDBSecurityGroupActionRequest">
+	    <component>
+	        <spring-object bean="DeleteDBSecurityGroupActionWorker"/>
+	    </component>
+	
+	    <flow-ref name="DeleteDBSecurityGroupActionResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="DeleteDBSecurityGroupActionResponse" >
+	    <component>
+	        <spring-object bean="DeleteDBSecurityGroupAction"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<!-- Request/Response flow for DeleteDBSnapshotAction -->
+	
+	<flow name="DeleteDBSnapshotActionRequest">
+	    <component>
+	        <spring-object bean="DeleteDBSnapshotActionWorker"/>
+	    </component>
+	
+	    <flow-ref name="DeleteDBSnapshotActionResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="DeleteDBSnapshotActionResponse" >
+	    <component>
+	        <spring-object bean="DeleteDBSnapshotAction"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<!-- Request/Response flow for DeleteDBSubnetGroupAction -->
+	
+	<flow name="DeleteDBSubnetGroupActionRequest">
+	    <component>
+	        <spring-object bean="DeleteDBSubnetGroupActionWorker"/>
+	    </component>
+	
+	    <flow-ref name="DeleteDBSubnetGroupActionResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="DeleteDBSubnetGroupActionResponse" >
+	    <component>
+	        <spring-object bean="DeleteDBSubnetGroupAction"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<!-- Request/Response flow for DescribeDBEngineVersionsAction -->
+	
+	<flow name="DescribeDBEngineVersionsActionRequest">
+	    <component>
+	        <spring-object bean="DescribeDBEngineVersionsActionWorker"/>
+	    </component>
+	
+	    <flow-ref name="DescribeDBEngineVersionsActionResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="DescribeDBEngineVersionsActionResponse" >
+	    <component>
+	        <spring-object bean="DescribeDBEngineVersionsAction"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<!-- Request/Response flow for DescribeDBInstancesAction -->
+	
+	<flow name="DescribeDBInstancesActionRequest">
+	    <component>
+	        <spring-object bean="DescribeDBInstancesActionWorker"/>
+	    </component>
+	
+	    <flow-ref name="DescribeDBInstancesActionResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="DescribeDBInstancesActionResponse" >
+	    <component>
+	        <spring-object bean="DescribeDBInstancesAction"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<!-- Request/Response flow for DescribeDBParameterGroupsAction -->
+	
+	<flow name="DescribeDBParameterGroupsActionRequest">
+	    <component>
+	        <spring-object bean="DescribeDBParameterGroupsActionWorker"/>
+	    </component>
+	
+	    <flow-ref name="DescribeDBParameterGroupsActionResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="DescribeDBParameterGroupsActionResponse" >
+	    <component>
+	        <spring-object bean="DescribeDBParameterGroupsAction"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<!-- Request/Response flow for DescribeDBParametersAction -->
+	
+	<flow name="DescribeDBParametersActionRequest">
+	    <component>
+	        <spring-object bean="DescribeDBParametersActionWorker"/>
+	    </component>
+	
+	    <flow-ref name="DescribeDBParametersActionResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="DescribeDBParametersActionResponse" >
+	    <component>
+	        <spring-object bean="DescribeDBParametersAction"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<!-- Request/Response flow for DescribeDBSecurityGroupsAction -->
+	
+	<flow name="DescribeDBSecurityGroupsActionRequest">
+	    <component>
+	        <spring-object bean="DescribeDBSecurityGroupsActionWorker"/>
+	    </component>
+	
+	    <flow-ref name="DescribeDBSecurityGroupsActionResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="DescribeDBSecurityGroupsActionResponse" >
+	    <component>
+	        <spring-object bean="DescribeDBSecurityGroupsAction"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<!-- Request/Response flow for DescribeDBSnapshotsAction -->
+	
+	<flow name="DescribeDBSnapshotsActionRequest">
+	    <component>
+	        <spring-object bean="DescribeDBSnapshotsActionWorker"/>
+	    </component>
+	
+	    <flow-ref name="DescribeDBSnapshotsActionResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="DescribeDBSnapshotsActionResponse" >
+	    <component>
+	        <spring-object bean="DescribeDBSnapshotsAction"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<!-- Request/Response flow for DescribeDBSubnetGroupAction -->
+	
+	<flow name="DescribeDBSubnetGroupActionRequest">
+	    <component>
+	        <spring-object bean="DescribeDBSubnetGroupActionWorker"/>
+	    </component>
+	
+	    <flow-ref name="DescribeDBSubnetGroupActionResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="DescribeDBSubnetGroupActionResponse" >
+	    <component>
+	        <spring-object bean="DescribeDBSubnetGroupAction"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<!-- Request/Response flow for DescribeEngineDefaultParametersAction -->
+	
+	<flow name="DescribeEngineDefaultParametersActionRequest">
+	    <component>
+	        <spring-object bean="DescribeEngineDefaultParametersActionWorker"/>
+	    </component>
+	
+	    <flow-ref name="DescribeEngineDefaultParametersActionResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="DescribeEngineDefaultParametersActionResponse" >
+	    <component>
+	        <spring-object bean="DescribeEngineDefaultParametersAction"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<!-- Request/Response flow for DescribeEventsAction -->
+	
+	<flow name="DescribeEventsActionRequest">
+	    <component>
+	        <spring-object bean="DescribeEventsActionWorker"/>
+	    </component>
+	
+	    <flow-ref name="DescribeEventsActionResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="DescribeEventsActionResponse" >
+	    <component>
+	        <spring-object bean="DescribeEventsAction"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<!-- Request/Response flow for DescribeOrderableDBInstanceOptionsAction -->
+	
+	<flow name="DescribeOrderableDBInstanceOptionsActionRequest">
+	    <component>
+	        <spring-object bean="DescribeOrderableDBInstanceOptionsActionWorker"/>
+	    </component>
+	
+	    <flow-ref name="DescribeOrderableDBInstanceOptionsActionResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="DescribeOrderableDBInstanceOptionsActionResponse" >
+	    <component>
+	        <spring-object bean="DescribeOrderableDBInstanceOptionsAction"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<!-- Request/Response flow for DescribeReservedDBInstancesAction -->
+	
+	<flow name="DescribeReservedDBInstancesActionRequest">
+	    <component>
+	        <spring-object bean="DescribeReservedDBInstancesActionWorker"/>
+	    </component>
+	
+	    <flow-ref name="DescribeReservedDBInstancesActionResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="DescribeReservedDBInstancesActionResponse" >
+	    <component>
+	        <spring-object bean="DescribeReservedDBInstancesAction"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<!-- Request/Response flow for DescribeReservedDBInstancesOfferingsAction -->
+	
+	<flow name="DescribeReservedDBInstancesOfferingsActionRequest">
+	    <component>
+	        <spring-object bean="DescribeReservedDBInstancesOfferingsActionWorker"/>
+	    </component>
+	
+	    <flow-ref name="DescribeReservedDBInstancesOfferingsActionResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="DescribeReservedDBInstancesOfferingsActionResponse" >
+	    <component>
+	        <spring-object bean="DescribeReservedDBInstancesOfferingsAction"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<!-- Request/Response flow for ModifyDBInstanceAction -->
+	
+	<flow name="ModifyDBInstanceActionRequest">
+	    <component>
+	        <spring-object bean="ModifyDBInstanceActionWorker"/>
+	    </component>
+	
+	    <flow-ref name="ModifyDBInstanceActionResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="ModifyDBInstanceActionResponse" >
+	    <component>
+	        <spring-object bean="ModifyDBInstanceAction"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<!-- Request/Response flow for ModifyDBParameterGroupAction -->
+	
+	<flow name="ModifyDBParameterGroupActionRequest">
+	    <component>
+	        <spring-object bean="ModifyDBParameterGroupActionWorker"/>
+	    </component>
+	
+	    <flow-ref name="ModifyDBParameterGroupActionResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="ModifyDBParameterGroupActionResponse" >
+	    <component>
+	        <spring-object bean="ModifyDBParameterGroupAction"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<!-- Request/Response flow for ModifyDBSubnetGroupAction -->
+	
+	<flow name="ModifyDBSubnetGroupActionRequest">
+	    <component>
+	        <spring-object bean="ModifyDBSubnetGroupActionWorker"/>
+	    </component>
+	
+	    <flow-ref name="ModifyDBSubnetGroupActionResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="ModifyDBSubnetGroupActionResponse" >
+	    <component>
+	        <spring-object bean="ModifyDBSubnetGroupAction"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<!-- Request/Response flow for MountDBVolume -->
+	
+	<flow name="MountDBVolumeRequest">
+	    <component>
+	        <spring-object bean="MountDBVolumeWorker"/>
+	    </component>
+	
+	    <flow-ref name="MountDBVolumeResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="MountDBVolumeResponse" >
+	    <component>
+	        <spring-object bean="MountDBVolume"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	
+	<!-- Request/Response flow for PurchaseReservedDBInstancesOfferingAction -->
+	
+	<flow name="PurchaseReservedDBInstancesOfferingActionRequest">
+	    <component>
+	        <spring-object bean="PurchaseReservedDBInstancesOfferingActionWorker"/>
+	    </component>
+	
+	    <flow-ref name="PurchaseReservedDBInstancesOfferingActionResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="PurchaseReservedDBInstancesOfferingActionResponse" >
+	    <component>
+	        <spring-object bean="PurchaseReservedDBInstancesOfferingAction"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<!-- Request/Response flow for RebootDBInstanceAction -->
+	
+	<flow name="RebootDBInstanceActionRequest">
+	    <component>
+	        <spring-object bean="RebootDBInstanceActionWorker"/>
+	    </component>
+	
+	    <flow-ref name="RebootDBInstanceActionResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="RebootDBInstanceActionResponse" >
+	    <component>
+	        <spring-object bean="RebootDBInstanceAction"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<!-- Request/Response flow for ResetDBParameterGroupAction -->
+	
+	<flow name="ResetDBParameterGroupActionRequest">
+	    <component>
+	        <spring-object bean="ResetDBParameterGroupActionWorker"/>
+	    </component>
+	
+	    <flow-ref name="ResetDBParameterGroupActionResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="ResetDBParameterGroupActionResponse" >
+	    <component>
+	        <spring-object bean="ResetDBParameterGroupAction"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<!-- Request/Response flow for RestoreDBInstanceFromDBSnapshotAction -->
+	
+	<flow name="RestoreDBInstanceFromDBSnapshotActionRequest">
+	    <component>
+	        <spring-object bean="RestoreDBInstanceFromDBSnapshotActionWorker"/>
+	    </component>
+	
+	    <flow-ref name="RestoreDBInstanceFromDBSnapshotActionResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="RestoreDBInstanceFromDBSnapshotActionResponse" >
+	    <component>
+	        <spring-object bean="RestoreDBInstanceFromDBSnapshotAction"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<!-- Request/Response flow for RestoreDBInstanceToPointInTimeAction -->
+	
+	<flow name="RestoreDBInstanceToPointInTimeActionRequest">
+	    <component>
+	        <spring-object bean="RestoreDBInstanceToPointInTimeActionWorker"/>
+	    </component>
+	
+	    <flow-ref name="RestoreDBInstanceToPointInTimeActionResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="RestoreDBInstanceToPointInTimeActionResponse" >
+	    <component>
+	        <spring-object bean="RestoreDBInstanceToPointInTimeAction"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<!-- Request/Response flow for RevokeDBSecurityGroupIngressAction -->
+	
+	<flow name="RevokeDBSecurityGroupIngressActionRequest">
+	    <component>
+	        <spring-object bean="RevokeDBSecurityGroupIngressActionWorker"/>
+	    </component>
+	
+	    <flow-ref name="RevokeDBSecurityGroupIngressActionResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="RevokeDBSecurityGroupIngressActionResponse" >
+	    <component>
+	        <spring-object bean="RevokeDBSecurityGroupIngressAction"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<!-- Request/Response flow for SignalCreateDBSnapshot -->
+	
+	<flow name="SignalCreateDBSnapshotRequest">
+	    <component>
+	        <spring-object bean="SignalCreateDBSnapshotWorker"/>
+	    </component>
+	
+	    <flow-ref name="SignalCreateDBSnapshotResponse"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>
+	
+	<flow name="SignalCreateDBSnapshotResponse" >
+	    <component>
+	        <spring-object bean="SignalCreateDBSnapshot"/>
+	    </component>
+	
+	    <flow-ref name="ClientResponder"/>
+	    <!-- Route unexpected errors to separate error handler -->
+	    <catch-exception-strategy>
+	        <outbound-endpoint ref="SystemErrorHandlerIn"/>
+	    </catch-exception-strategy>
+	</flow>  
+
+     <!-- General system flows -->
+
+    <flow name="ClientResponder">
+        <component>
+            <spring-object bean="rdsServiceAsync"/>
+        </component>
+    </flow>
+
+    <model>
+        <service name="UserErrorHandler">
+            <inbound>
+                <vm:inbound-endpoint path="userErrorHandler" responseTransformer-refs="ExceptionToString" exchange-pattern="request-response"/>
+            </inbound>
+        </service>
+    </model>
+
+    <!-- Handle any unexpected errors. Errors could also be routed elsewhere,
+        e.g. into an error file, send via email to a list, stored in a database, etc. -->
+    <flow name="SystemErrorHandler">
+        <inbound-endpoint ref="SystemErrorHandlerIn"/>
+
+        <flow-ref name="ClientResponder"/>
+    </flow>
+
+</mule>

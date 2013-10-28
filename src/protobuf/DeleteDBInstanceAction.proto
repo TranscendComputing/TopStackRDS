@@ -1,0 +1,23 @@
+import "RDS.proto";
+package topstack_RDS;
+
+option java_package = "com.transcend.rds.message";
+option java_outer_classname = "DeleteDBInstanceActionMessage";
+
+message DeleteDBInstanceActionRequestMessage {
+    required bool typeId = 614;
+
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+    required string dbInstanceIdentifier = 3;
+    optional string finalDBSnapshotIdentifier = 4;
+    optional bool   skipFinalSnapshot = 5;
+
+}
+
+message DeleteDBInstanceActionResultMessage {
+    required bool typeId = 615;
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+	required DBInstance dbInstance = 3;
+}

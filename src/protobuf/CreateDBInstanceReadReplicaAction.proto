@@ -1,0 +1,31 @@
+import "RDS.proto";
+package topstack_RDS;
+
+option java_package = "com.transcend.rds.message";
+option java_outer_classname = "CreateDBInstanceReadReplicaActionMessage";
+
+message CreateDBInstanceReadReplicaActionRequestMessage {
+    required bool typeId = 604;
+
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+    required uint32 allocatedStorage = 3;
+    optional bool   autoMinorVersionUpgrade = 4;
+    optional string availabilityZone = 5;
+    optional string dbInstanceClass = 6;
+
+    required string dbInstanceIdentifier = 7;
+    optional uint32 iops = 8;
+    optional string optionGroupName = 9;
+    optional uint32 port = 10;
+    optional bool   publiclyAccessible = 11;
+    required string sourceDBInstanceIdentifier = 12;
+    repeated Tag    tags = 13;
+}
+
+message CreateDBInstanceReadReplicaActionResultMessage {
+    required bool typeId = 605;
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+	required DBInstance dbInstance = 3;
+}

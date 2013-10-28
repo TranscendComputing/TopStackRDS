@@ -1,0 +1,68 @@
+import "RDS.proto";
+package topstack_RDS;
+
+option java_package = "com.transcend.rds.message";
+option java_outer_classname = "RestoreDBInstanceToPointInTimeActionMessage";
+
+message RestoreDBInstanceToPointInTimeActionRequestMessage {
+    required bool typeId = 662;
+
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+    optional bool   autoMinorVersionUpgrade = 3;
+    optional string availabilityZone = 4;
+    required string dbInstanceClass = 5;
+    optional string dbName = 6;
+    optional string dbSubnetGroupName = 7;
+    required string engine = 8;
+    optional uint32 iops = 9;
+    optional string licenseModel = 10;
+    optional bool   multiAZ = 11;
+    optional string optionGroupName = 12;
+    optional uint32 port = 13;
+    optional bool   publiclyAccessible = 14;
+    optional string restoreTime = 15;
+    required string sourceDBInstanceIdentifier = 16;
+    repeated Tag    tags = 17;
+    required string targetDBInstanceIdentifier = 18;
+    optional bool   useLatestRestorableTime = 19;
+
+}
+
+message RestoreDBInstanceToPointInTimeActionResultMessage {
+    required bool typeId = 663;
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+    required uint32 allocatedStorage = 3;
+    required bool   autoMinorVersionUpgrade = 4;
+    required string availabilityZone = 5;
+    required uint32 backupRetentionPeriod = 6;
+    required string characterSetName = 7;
+    required string dbInstanceClass = 8;
+    required string dbInstanceIdentifier = 9;
+    required string dbInstanceStatus = 10;
+    required string dbName = 11;
+    repeated DBParameterGroupStatus dbParameterGroups = 12;
+    repeated DBSecurityGroupMembership dbSecurityGroups = 13;
+    required DBSubnetGroup dbSubnetGroup = 14;
+    required Endpoint endpoint = 15;
+    required string engine = 16;
+    required string engineVersion = 17;
+    required string instanceCreateTime = 18;
+    required uint32 iops = 19;
+    required string latestRestorableTime = 20;
+    required string licenseModel = 21;
+    required string masterUsername = 22;
+    required bool   multiAZ = 23;
+    repeated OptionGroupMembership optionGroupMemberships = 24;
+    required PendingModifiedValues pendingModifiedValues = 25;
+    required string preferredBackupWindow = 26;
+    required string preferredMaintenanceWindow = 27;
+    required bool   publiclyAccessible = 28;
+    repeated string readReplicaDBInstanceIdentifiers = 29;
+    required string readReplicaSourceDBInstanceIdentifier = 30;
+    required string secondaryAvailabilityZone = 31;
+    repeated DBInstanceStatusInfo statusInfos = 32;
+    repeated VpcSecurityGroupMembership vpcSecurityGroups = 33;
+
+}

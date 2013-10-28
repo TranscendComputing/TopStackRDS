@@ -1,0 +1,19 @@
+package topstack_RDS;
+
+option java_package = "com.transcend.rds.message";
+option java_outer_classname = "DeleteDBParameterGroupActionMessage";
+
+message DeleteDBParameterGroupActionRequestMessage {
+    required bool typeId = 616;
+
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+    required string dbParameterGroupName = 3;
+
+}
+
+message DeleteDBParameterGroupActionResultMessage {
+    required bool typeId = 617;
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+}

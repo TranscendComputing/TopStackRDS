@@ -1,0 +1,20 @@
+import "RDS.proto";
+package topstack_RDS;
+
+option java_package = "com.transcend.rds.message";
+option java_outer_classname = "DeleteDBSecurityGroupActionMessage";
+
+message DeleteDBSecurityGroupActionRequestMessage {
+    required bool typeId = 618;
+
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+    required string dbSecurityGroupName = 3;
+}
+
+message DeleteDBSecurityGroupActionResultMessage {
+    required bool typeId = 619;
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+
+}

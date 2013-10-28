@@ -1,0 +1,26 @@
+import "RDS.proto";
+package topstack_RDS;
+
+option java_package = "com.transcend.rds.message";
+option java_outer_classname = "DescribeDBSubnetGroupActionMessage";
+
+message DescribeDBSubnetGroupActionRequestMessage {
+    required bool typeId = 636;
+
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+    optional string dbSubnetGroupName = 3;
+    repeated Filter filters = 4; 
+    optional string marker = 5;
+    optional uint32 maxRecords = 6;
+
+}
+
+message DescribeDBSubnetGroupActionResultMessage {
+    required bool typeId = 637;
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+    repeated DBSubnetGroup dbSubnetGroups = 3;
+    required string marker = 4;
+
+}

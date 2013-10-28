@@ -1,0 +1,23 @@
+import "RDS.proto";
+package topstack_RDS;
+
+option java_package = "com.transcend.rds.message";
+option java_outer_classname = "MountDBVolumeMessage";
+
+message MountDBVolumeRequestMessage {
+    required bool typeId = 665;
+
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+    optional uint64 acId = 3;
+    optional string stackId = 4;
+    optional string device = 5;
+    optional string snapshotId = 6;
+			
+}
+
+message MountDBVolumeResultMessage {
+    required bool typeId = 666;
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+}

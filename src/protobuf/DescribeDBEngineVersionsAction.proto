@@ -1,0 +1,27 @@
+import "RDS.proto";
+package topstack_RDS;
+
+option java_package = "com.transcend.rds.message";
+option java_outer_classname = "DescribeDBEngineVersionsActionMessage";
+
+message DescribeDBEngineVersionsActionRequestMessage {
+    required bool typeId = 624;
+
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+    optional string dbParameterGroupFamily = 3;
+    optional bool   defaultOnly = 4;
+    optional string engine = 5;
+    optional string engineVersion = 6;
+    optional bool   listSupportedCharacterSets = 7;
+    optional string marker = 8;
+    optional uint32 maxRecords = 9;
+}
+
+message DescribeDBEngineVersionsActionResultMessage {
+    required bool typeId = 625;
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+    repeated DBEngineVersion dbEngineVersions = 3;
+    required string marker = 4;
+}

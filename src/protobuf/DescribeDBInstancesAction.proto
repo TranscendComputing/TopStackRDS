@@ -1,0 +1,26 @@
+import "RDS.proto";
+package topstack_RDS;
+
+option java_package = "com.transcend.rds.message";
+option java_outer_classname = "DescribeDBInstancesActionMessage";
+
+message DescribeDBInstancesActionRequestMessage {
+    required bool typeId = 626;
+
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+    optional string dbInstanceIdentifier = 3;
+    repeated Filter filters = 4;
+    optional string marker = 5;
+    optional uint32 maxRecords = 6;
+
+}
+
+message DescribeDBInstancesActionResultMessage {
+    required bool typeId = 627;
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+    repeated DBInstance dbInstances = 3;
+    required string marker = 4;
+
+}

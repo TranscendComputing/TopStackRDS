@@ -1,0 +1,36 @@
+import "RDS.proto";
+package topstack_RDS;
+
+option java_package = "com.transcend.rds.message";
+option java_outer_classname = "DeleteDBSnapshotActionMessage";
+
+message DeleteDBSnapshotActionRequestMessage {
+    required bool typeId = 620;
+
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+    required string dbSnapshotIdentifier= 3;
+}
+
+message DeleteDBSnapshotActionResultMessage {
+    required bool typeId = 621;
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+    required uint32 allocatedStorage = 3;
+    required string availabilityZone = 4;
+    required string dbInstanceIdentifier = 5;
+    required string dbSnapshotIdentifier = 6;
+    required string engine = 7;
+    required string engineVersion = 8;
+    required string instanceCreateTime = 9;
+    required uint32 iops = 10;
+    required string licenseModel = 11;
+    required string masterUsername = 12;
+    required string optionGroupName = 13;
+    required uint32 port = 14;
+    required string snapshotCreateTime = 15;
+    required string snapshotType = 16;
+    required string status = 17;
+    required string vpcId = 18;
+
+}

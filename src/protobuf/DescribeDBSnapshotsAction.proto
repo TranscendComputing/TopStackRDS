@@ -1,0 +1,26 @@
+import "RDS.proto";
+package topstack_RDS;
+
+option java_package = "com.transcend.rds.message";
+option java_outer_classname = "DescribeDBSnapshotsActionMessage";
+
+message DescribeDBSnapshotsActionRequestMessage {
+    required bool typeId = 634;
+
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+    optional string dbInstanceIdentifier = 3;
+    optional string dbSnapshotIdentifier = 4;
+    optional Filter filters = 5;
+    optional string marker = 6;
+    optional uint32 maxRecords = 7;
+    optional string snapshotType = 8;
+}
+
+message DescribeDBSnapshotsActionResultMessage {
+    required bool typeId = 635;
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+	repeated DBSnapshot dbSnapshots = 3;
+	required string marker = 4;
+}

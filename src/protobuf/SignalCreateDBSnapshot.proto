@@ -1,0 +1,24 @@
+import "RDS.proto";
+package topstack_RDS;
+
+option java_package = "com.transcend.rds.message";
+option java_outer_classname = "SignalCreateDBSnapshotMessage";
+
+message SignalCreateDBSnapshotRequestMessage {
+    required bool typeId = 667;
+
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+    required string dbInstanceIdentifier = 3;
+    optional string originalDBInstanceIdentifier = 4;
+    required string dbSnapshotIdentifier = 5;
+    optional uint32 accountIdentifier = 6;
+			
+}
+
+message SignalCreateDBSnapshotResultMessage {
+    required bool typeId = 668;
+    required string requestId = 1;
+    required string callerAccessKey = 2;
+
+}
