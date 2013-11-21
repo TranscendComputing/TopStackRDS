@@ -154,39 +154,6 @@ public class CreateDBInstanceActionWorker extends
 					sess, req, ac);
 			newInstRec.setDbinstanceStatus("creating");
 
-			logger.debug("Creating a new databag with following inputs...\n"
-					+ "AllocatedStorage: "
-					+ newInstRec.getAllocatedStorage()
-					+ "\n"
-					+ "MasterUsername: "
-					+ newInstRec.getMasterUsername()
-					+ "\n"
-					+ "MasterPassword: "
-					+ newInstRec.getMasterUserPassword()
-					+ "\n"
-					+ "AutoMinorVersionUpgrade: "
-					+ newInstRec.getAutoMinorVersionUpgrade()
-					+ "\n"
-					+ "Engine: "
-					+ newInstRec.getEngine()
-					+ "\n"
-					+ "EngineVersion: "
-					+ newInstRec.getEngineVersion()
-					+ "\n"
-					+ "DBName: "
-					+ newInstRec.getDbName()
-					+ "\n"
-					+ "BackupRetentionPeriod: "
-					+ newInstRec.getBackupRetentionPeriod()
-					+ "\n"
-					+ "PreferredBackupWindow: "
-					+ newInstRec.getPreferredBackupWindow()
-					+ "\n"
-					+ "PreferredMaintenanceWindow: "
-					+ newInstRec.getPreferredMaintenanceWindow()
-					+ "\n"
-					+ "LicenseModel: " + newInstRec.getLicenseModel());
-
 			final String postWaitUrl = (String) ConfigurationUtil
 					.getConfiguration(Arrays.asList(new String[] {
 							"TRANSCEND_URL", newInstRec.getAvailabilityZone() }));
