@@ -902,7 +902,9 @@ public class ValidationManager {
 		} else if (!parmGrpFamily.toUpperCase().contentEquals(
 				RDSUtilities.ENGINE_FAMILY.toUpperCase())
 				&& !parmGrpFamily.toUpperCase().contentEquals(
-						RDSUtilities.ENGINE_FAMILY_ORACLE.toUpperCase())) {
+						RDSUtilities.ENGINE_FAMILY_ORACLE.toUpperCase())
+				&& !parmGrpFamily.toUpperCase().contentEquals(
+						RDSUtilities.ENGINE_FAMILY_SQL_SERVER.toUpperCase())) {
 			msg = "Validate: The only ParameterGroupFamily supported is "
 					+ RDSUtilities.ENGINE_FAMILY + "and "
 					+ RDSUtilities.ENGINE_FAMILY_ORACLE + " and not "
@@ -913,6 +915,9 @@ public class ValidationManager {
 		} else if (parmGrpFamily.toUpperCase().contentEquals(
 				RDSUtilities.ENGINE_FAMILY.toUpperCase())) {
 			retval = RDSUtilities.ENGINE_FAMILY;
+		} else if (parmGrpFamily.toUpperCase().contentEquals(
+				RDSUtilities.ENGINE_FAMILY_SQL_SERVER.toUpperCase())) {
+			retval = RDSUtilities.ENGINE_FAMILY_SQL_SERVER;
 		} else {
 			retval = RDSUtilities.ENGINE_FAMILY_ORACLE;
 		}
