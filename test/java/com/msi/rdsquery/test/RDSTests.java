@@ -57,10 +57,8 @@ public class RDSTests {
 
 
 		AWSCredentials creds = new BasicAWSCredentials("66e2e48653d34bbba71591cd88af5241", "0a5ec60c06b94e0b8fa17636a5e6da35");
-		//creds = new BasicAWSCredentials("AKIAJ5GBL5ZNDYTIJ2DA", "rT1zzxvGb732zrX8R3WcQF/CoKCSQK33ynrwXzNu");
 		AmazonRDSClient rds = new AmazonRDSClient(creds);
 		rds.setEndpoint("http://dk-sandbox:8080/RDSQuery/");
-		//rds.setEndpoint("http://localhost:12345");
 
 		// ============================================= RDS Test =======================================================
 
@@ -223,7 +221,7 @@ public class RDSTests {
 		//vol.attach(call);
 
 
-		/*AWSCredentials cred = new BasicAWSCredentials("WN9OL5XUHV41VCOIE4G3C", "KYZBgtrhprNxwhvRp0tpwD4FNjr6jA8J4OmemhEg");
+		/*AWSCredentials cred = new BasicAWSCredentials("access", "secret");
 		AmazonEC2Client ec2 = new AmazonEC2Client(cred);
 		ec2.setEndpoint("http://euca3fe.momentumsoftware.com:8773/services/Eucalyptus");
 		AttachVolumeRequest req = new AttachVolumeRequest();
@@ -256,7 +254,7 @@ public class RDSTests {
 			System.out.println("Volume was never set to available state...");
 		}*/
 
-		AWSCredentials cred = new BasicAWSCredentials("WN9OL5XUHV41VCOIE4G3C", "KYZBgtrhprNxwhvRp0tpwD4FNjr6jA8J4OmemhEg");
+		AWSCredentials cred = new BasicAWSCredentials("access", "secret");
 		try{
 		AmazonEC2Client ec2 = new AmazonEC2Client(cred);
 		//ec2.setEndpoint("http://essexfe.momentumsoftware.com:8773/services/Cloud");
